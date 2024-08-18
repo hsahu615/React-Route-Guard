@@ -1,23 +1,26 @@
 import "./App.css";
-import React, { useState } from "react";
-import UseState from "./UseState";
-import UseRef from "./UseRef";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import PrivateRoute from "./PrivateRoute";
+import Home from "./Home";
+import Profile from "./Profile";
+import AboutUs from "./AboutUs";
+import RequireAuth from "./RequireAuth";
+import useAuth from "./useAuth";
+import AuthProvider from "./AuthProvider";
 
-const UseEffect = React.lazy(() => import("./UseEffect"));
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   return (
     <div className="App">
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<UseState />} />
-          <Route path="/useeffect" element={<UseEffect />} />
-          <Route element={<PrivateRoute isAuthenticated={isAuthenticated} />}>
-            <Route path="/useref" element={<UseRef />} />
-          </Route>
-        </Routes>
+        <AuthProvider>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<AboutUs />} />
+            <Route element={<RequireAuth />}>
+              <Route path="/profile" element={<Profile />} />
+            </Route>
+          </Routes>
+        </AuthProvider>
       </BrowserRouter>
     </div>
   );
